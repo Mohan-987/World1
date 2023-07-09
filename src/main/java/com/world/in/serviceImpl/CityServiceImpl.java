@@ -2,8 +2,10 @@ package com.world.in.serviceImpl;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
+import com.world.in.entity.Country;
 import com.world.in.exception.CountryNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -17,9 +19,7 @@ import com.world.in.service.CityService;
 
 @Service
 public class CityServiceImpl implements CityService {
-
     private CityRepository cityRepository;
-
     @Autowired
     public CityServiceImpl(CityRepository cityRepository) {
         this.cityRepository = cityRepository;
@@ -55,17 +55,13 @@ public class CityServiceImpl implements CityService {
     }
     @Override
     public List<String> getTop10PopulatedCityNames() {
-        List<City> top10Cities = cityRepository.findTop10ByOrderByPopulationDesc();
+        List<City> top10Cities = cityRepository.findTop10ByOrderByPopulationDesc().orElseThrow(()->new CityNotFoundException("Unable To Get Top Ten Cities"));
         return top10Cities.stream().map(City::getName).collect(Collectors.toList());
-    }
-    @Override
-    public List<Object[]> getAllCityRegion() {
-        List<Object[]> allCities =cityRepository.getAllCityRegion().orElseThrow(()->new CityNotFoundException("No Cities Found"));
-        return allCities;
     }
     @Override
     public Collection<CityRegionDto> fetchCityNamesAndRegions() {
         List<City> cities = cityRepository.findAll();
+        if(cities.isEmpty()) throw new CityNotFoundException("Unable To Get City Names And Regions! Check City Name");
         List<CityRegionDto> cityRegionDtos = new ArrayList<>();
         for (City city : cities) {
             String region = "";
@@ -74,7 +70,6 @@ public class CityServiceImpl implements CityService {
             }
             cityRegionDtos.add(new CityRegionDto(city.getName(), region));
         }
-
         return cityRegionDtos;
     }
     @Override
@@ -89,7 +84,6 @@ public class CityServiceImpl implements CityService {
         }
         return citiesAndDistricts;
     }
-
     @Override
     public List<String> getDistinctDistricts() {
         List<String> districts = cityRepository.findDistinctDistricts().orElseThrow(()->new CityNotFoundException("No Districts Found"));
@@ -107,13 +101,11 @@ public class CityServiceImpl implements CityService {
         cityRepository.save(city);
         return city;
     }
-
     @Override
     public City updatePopulationByCityName(String cityName, Integer population) {
         City city = cityRepository.findByName(cityName).orElseThrow(()->new CityNotFoundException("City Not Found "+cityName+" Check Once!"));
         city.setPopulation(population);
         return cityRepository.save(city);
-
     }
 }
     

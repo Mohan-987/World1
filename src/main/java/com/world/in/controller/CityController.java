@@ -4,6 +4,7 @@ import java.util.Collection;
 
 import java.util.List;
 
+import com.world.in.entity.Country;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -22,48 +23,40 @@ import com.world.in.service.CityService;
 @RequestMapping(value="/api/cities")
 public class CityController {
 
-    private final CityService cityService;
-
+    private CityService cityService;
     @Autowired
-    public CityController(CityService cityService) {
+    public void setCityService(CityService cityService) {
         this.cityService = cityService;
     }
-
     @GetMapping
     public ResponseEntity<List<City>> getAllCities() {
         List<City> cities  = cityService.getAllCities();
 		return new ResponseEntity<List<City>>(cities,HttpStatus.OK);
     }
-
     @GetMapping( value="/firsttencities/{ch}")
     public ResponseEntity<List<String>> getFirstTenCitiesStartingWithChar(@PathVariable char ch) {
-        List<String> cities = cityService.getFirstTenCitiesStartingWithChar(ch);
-        return ResponseEntity.ok(cities);
+        return new ResponseEntity<>(cityService.getFirstTenCitiesStartingWithChar(ch),HttpStatus.OK);
     }
     @GetMapping("/maxpopulated")
     public ResponseEntity<City> getCityWithMaxPopulation() {
-        City city = cityService.getCityWithMaxPopulation();
-        return new ResponseEntity<>(city,HttpStatus.OK);
+        return new ResponseEntity<>(cityService.getCityWithMaxPopulation(),HttpStatus.OK);
     }
     @GetMapping("/toptenpopulatedcities")
     public ResponseEntity<List<String>> getTop10PopulatedCities() {
-        List<String> cities = cityService.getTop10PopulatedCityNames();
-        return new ResponseEntity<>(cities,HttpStatus.OK);
+        return new ResponseEntity<>(cityService.getTop10PopulatedCityNames(),HttpStatus.OK);
     }
     @GetMapping("/regions")
     public ResponseEntity<Collection<CityRegionDto>> fetchCityNamesAndRegions() {
-        Collection<CityRegionDto> cityRegionDtos = cityService.fetchCityNamesAndRegions();
-        return new ResponseEntity<>(cityRegionDtos, HttpStatus.OK);
+        return new ResponseEntity<>(cityService.fetchCityNamesAndRegions(), HttpStatus.OK);
     }
     @GetMapping("/districts/{countrycode}")
     public ResponseEntity<List<City>> getCitiesAndDistrictsByCountryCode(@PathVariable String countrycode) {
-        List<City> cityDtoList = cityService.getCitiesAndDistrictsByCountryCode(countrycode);
-        return ResponseEntity.ok(cityDtoList);
+        return new ResponseEntity<>(cityService.getCitiesAndDistrictsByCountryCode(countrycode),HttpStatus.OK);
     }
 
     @GetMapping("/districts")
-    public List<String> getDistinctDistricts() {
-        return cityService.getDistinctDistricts();
+    public ResponseEntity<List<String>> getDistinctDistricts() {
+        return new ResponseEntity<>(cityService.getDistinctDistricts(),HttpStatus.OK);
     }
     @GetMapping("/avgpopulation/{districtName}")
     public ResponseEntity<String> getAveragePopulationByDistrict(@PathVariable String districtName) {

@@ -14,18 +14,7 @@ public interface CountryLanguageService {
 	List<CountryLanguage> getAllOfficialLanguages();
 	public List<CountryLanguage> getUnofficialLanguagesByCountryCode(String countryCode);
 	public Map<String, String> getLanguageWithMaxPercentageByCountryCode();
-
-	String findLanguageWithMaxPercentage(String countryCode);
-
-	//public String findLanguageWithMaxPercentage(String countryCode);
-	public String updateIsOfficialFlag(String countryCode, String language, String isOfficial);
-	
-	//update percentage
-	//public String updatePercentageByCountryAndLanguage(String countryCode, String language, BigDecimal percentage);
-			
+	public String updateOfficialByCountryAndLanguage(String countryCode, String language,char isOfficial);
+	public String updatePercentageByCountryAndLanguage(String countryCode, String language, BigDecimal percentage);
 	public String getMaxPercentageLanguageByCountryCode(String countryCode);
-	//public String findLanguageWithMaxPercentage(String countryCode);
-	
-	
-	
 }

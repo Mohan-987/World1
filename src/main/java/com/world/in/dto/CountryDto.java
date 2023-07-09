@@ -1,33 +1,14 @@
 package com.world.in.dto;
 
+import lombok.*;
+
 import java.math.BigDecimal;
-
+@AllArgsConstructor
+@Setter
+@Getter
+@NoArgsConstructor
+@ToString
 public class CountryDto {
-
 	private String name;
 	private BigDecimal gnp;
-	public String getName() {
-		return name;
-	}
-	public void setName(String name) {
-		this.name = name;
-	}
-	public BigDecimal getGnp() {
-		return gnp;
-	}
-	public void setGnp(BigDecimal gnp) {
-		this.gnp = gnp;
-	}
-	public CountryDto(String name, BigDecimal gnp) {
-		super();
-		this.name = name;
-		this.gnp = gnp;
-	}
-	public CountryDto() {
-		super();
-	}
-	
-	
-	
-	
 }

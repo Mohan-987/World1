@@ -17,6 +17,7 @@ import javax.persistence.Table;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Pattern;
 
+import com.world.entity.enums.Continent;
 import lombok.*;
 import org.hibernate.annotations.GenericGenerator;
 
@@ -31,17 +32,11 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 @AllArgsConstructor
 @Entity
 public class Country {
-
-    public enum Continent {
-        Asia, Europe, North_America, Africa, Oceania, Antarctica, South_America
-    }
-
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO, generator = "uuid2")
     @GenericGenerator(name = "uuid2", strategy = "org.hibernate.id.UUIDGenerator")
     @Column(name = "Code", columnDefinition = "varchar(255)")
     private String code;
-
 
     @Column(name = "Name")
     private String name;
@@ -58,7 +53,6 @@ public class Country {
 
     @Column(name = "IndepYear")
     private Integer indepYear;
-
 
     @Column(name = "Population")
     private Integer population;
@@ -89,12 +83,6 @@ public class Country {
 
     @OneToMany(mappedBy = "country", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<City> cities;
-	public List<CountryLanguage> getCountryLanguages() {
-		return countryLanguages;
-	}
-	public void setCountryLanguages(List<CountryLanguage> countryLanguages) {
-		this.countryLanguages = countryLanguages;
-	}
 	@JsonIgnore
 	@OneToMany(mappedBy = "country", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<CountryLanguage> countryLanguages;

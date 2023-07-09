@@ -8,6 +8,7 @@ import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+import com.world.in.exception.CityNotFoundException;
 import com.world.in.exception.CountryLanguageNotFoundException;
 import com.world.in.exception.CountryNotFoundException;
 import com.world.in.repository.CityRepository;
@@ -50,12 +51,10 @@ public class CountryServiceImpl implements CountryService{
 	}
 	@Override
 	public Country getOneCountry(String name) {
-		 Country country = countryRepository.findByName(name).orElseThrow(()->new CountryNotFoundException("Country Name Not Found "+name+" Check Once!"));
-		 return country;
-		 
+		 return  countryRepository.findByName(name).orElseThrow(()->new CountryNotFoundException("Country Name Not Found "+name+" Check Once!"));
 	}
 	@Override
-	public String populationLifeExpectency(String countryCode)
+	public String populationLifeExpectancy(String countryCode)
 	{
 		Country country = countryRepository.findByCode(countryCode).orElseThrow(()->new CountryNotFoundException("Country Code Not Found"));
 		String s;
@@ -66,13 +65,14 @@ public class CountryServiceImpl implements CountryService{
 	}
 	@Override
 	public City getCapitalCityByCountryName(String countryName) {
-		Country country = countryRepository.findByName(countryName).orElseThrow(()->new CountryNotFoundException("Country Name Not Found "+countryName+" Check Once!"));
-		return cityRepository.findById(country.getCapital()).get();
+		Country country = countryRepository.findByName(countryName)
+				.orElseThrow(() -> new CountryNotFoundException("Country Name Not Found: " + countryName));
+		return cityRepository.findById(country.getCapital())
+				.orElseThrow(() -> new CityNotFoundException("Capital City Not Found for Country: " + countryName));
 	}
 	@Override
 	public Country getCountryWithHighestLifeExpectancy() {
-		 Country country =countryRepository.findFirstByOrderByLifeExpectancyDesc().orElseThrow(()->new CountryNotFoundException("Country Not Found! Unable To get Highest Expectancy"));
-		 return country;
+		 return countryRepository.findFirstByOrderByLifeExpectancyDesc().orElseThrow(()->new CountryNotFoundException("Country Not Found! Unable To get Highest Expectancy"));
 	}
 	@Override
 	public Collection<String> getDistinctGovernmentForms() {
@@ -86,7 +86,7 @@ public class CountryServiceImpl implements CountryService{
 	    }
 	@Override
 	public Collection<CountryData> getTop10PopulatedCountries() {
-	    PageRequest pageRequest = PageRequest.of(0, 10); // Create a PageRequest object with page number 0 and size 10
+	    PageRequest pageRequest = PageRequest.of(0, 10);
 	    Collection<CountryData> countries = countryRepository.findTop10ByOrderByPopulationDesc(pageRequest);
 		if(countries.isEmpty()) throw new CountryNotFoundException("No Populations Found");
 	    List<CountryData> countryDataList = new ArrayList<>();
@@ -110,11 +110,11 @@ public class CountryServiceImpl implements CountryService{
 	        }
 	    return allLanguages;
 	}
-@Override
-  public Country updateGNP(String name, BigDecimal gnp) {
-			Country country = countryRepository.findByName(name).orElseThrow(()->new CountryNotFoundException("Country Name Not Found"));
-			country.setGnp(gnp);
-            return countryRepository.save(country);
+	@Override
+	public Country updateGNP(String name, BigDecimal gnp) {
+		Country country = countryRepository.findByName(name).orElseThrow(()->new CountryNotFoundException("Country Name Not Found"));
+		country.setGnp(gnp);
+		return countryRepository.save(country);
     }
 	@Override
     public String getCityCountByCountryName(String countryName) {
@@ -143,14 +143,11 @@ public class CountryServiceImpl implements CountryService{
 		country.setHeadOfState(newHeadOfState);
 	        return countryRepository.save(country);
 	}
-	//update pop
 	@Override
     public Country updatePopulation(String countryCode, Integer newPopulation) {
-
         Country country = countryRepository.findByName(countryCode).orElseThrow(()->new CountryNotFoundException("Country Name Not Found"));
         country.setPopulation(newPopulation);
         countryRepository.save(country);
         return country;
     }
-	//update percentage
 }

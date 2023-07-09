@@ -42,66 +42,67 @@ public class CountryController {
 	@GetMapping
 	public ResponseEntity<List<Country>> getAllCountries() {
 		List<Country> allCountries=cuService.getAllCountries();
-		ResponseEntity<List<Country>> re=new ResponseEntity<List<Country>>(allCountries,HttpStatus.OK);
-		return re;
+		return new ResponseEntity<List<Country>>(allCountries,HttpStatus.OK);
 	}
 	@GetMapping(value = "/{name}")
     public ResponseEntity<Country> getCountryByName(@PathVariable String name) {
 		Country country=cuService.getOneCountry(name);
 		return new ResponseEntity<>(country,HttpStatus.OK);
     }
+	@GetMapping("/{countryCode}/population")
+	public ResponseEntity<String> getPopulationAndLifeExpectancy(@PathVariable String countryCode) {
+		String cityCount = cuService.populationLifeExpectancy(countryCode);
+		return new ResponseEntity<>(cityCount,HttpStatus.OK);
+	}
 	 @GetMapping("/highestlifeexpectancy")
 	 public ResponseEntity<Country> getCountryWithHighestLifeExpectancy() {
 		 Country country = cuService.getCountryWithHighestLifeExpectancy();
 		 return new ResponseEntity<>(country, HttpStatus.OK);
 	 }
-	@GetMapping("/{name}/capital")
-	public ResponseEntity<String> getCapitalCityByCountryName(@PathVariable("name") String countryName) {
+	 @GetMapping("/{name}/capital")
+	 public ResponseEntity<String> getCapitalCityByCountryName(@PathVariable("name") String countryName) {
 		City capitalCity = cuService.getCapitalCityByCountryName(countryName);
 		return new ResponseEntity<String>(capitalCity.getName(),HttpStatus.OK);
 	}
 	 @GetMapping("/uniquegovernmentforms")
 	 public ResponseEntity<Collection<String>> getDistinctGovernmentForms() {
 		Collection<String> governmentForms = cuService.getDistinctGovernmentForms();
-		 return new ResponseEntity<>(governmentForms,HttpStatus.OK);
-	    }
-	 @GetMapping("/toptenpopulated")
-	 public ResponseEntity<Collection<CountryData>> getTop10PopulatedCountries() {
+		return new ResponseEntity<>(governmentForms,HttpStatus.OK);
+	}
+	@GetMapping("/toptenpopulated")
+	public ResponseEntity<Collection<CountryData>> getTop10PopulatedCountries() {
 		Collection<CountryData> top10PopulatedCountries = cuService.getTop10PopulatedCountries();
-		 return new ResponseEntity<>(top10PopulatedCountries, HttpStatus.OK);
-	 }
-	 @GetMapping(value="/{region}/alllanguages")
-     public ResponseEntity<List<CountryLanguage>> getAllLanguagesByRegion(@PathVariable String region) {
+		return new ResponseEntity<>(top10PopulatedCountries, HttpStatus.OK);
+	}
+	@GetMapping(value="/{region}/alllanguages")
+	public ResponseEntity<List<CountryLanguage>> getAllLanguagesByRegion(@PathVariable String region) {
 		List<CountryLanguage> CL= cuService.getAllLanguagesByRegion(region);
 		return new ResponseEntity<List<CountryLanguage>>(CL, HttpStatus.OK);
-     }
-	 @PatchMapping("/updategnp/{name}")
-	 public ResponseEntity<Country> updateGNP(@PathVariable String name, @RequestParam BigDecimal gnp) {
-	     Country updatedCountry = cuService.updateGNP(name, gnp);
-		 return new ResponseEntity<>(updatedCountry,HttpStatus.OK);
+	}
+	@PatchMapping("/updategnp/{name}")
+	public ResponseEntity<Country> updateGNP(@PathVariable String name, @RequestParam BigDecimal gnp) {
+		Country updatedCountry = cuService.updateGNP(name, gnp);
+		return new ResponseEntity<>(updatedCountry,HttpStatus.OK);
 	 }
 	 @GetMapping("/{name}/citycount")
-     public ResponseEntity<String> getCityCountByCountryName(@PathVariable("name") String countryName) {
+	 public ResponseEntity<String> getCityCountByCountryName(@PathVariable("name") String countryName) {
 		String cityCount = cuService.getCityCountByCountryName(countryName);
 		return new ResponseEntity<>(cityCount,HttpStatus.OK);
-     }
+	}
 	 @GetMapping("/{name}/cities")
      public ResponseEntity<List<String>> getCityNamesByCountry(@PathVariable("name") String countryName) {
 		List<String> cityNames = cuService.getCityNamesByCountry(countryName);
 		return new ResponseEntity<>(cityNames,HttpStatus.OK);
      }
-
 	 @GetMapping("/toptengnp")
      public ResponseEntity<List<CountryDto>> getTopTenGNPCountries() {
 		List<CountryDto> countries = cuService.getTopTenGNPCountries();
 		return new ResponseEntity<>(countries, HttpStatus.OK);
      }
-
 	 @PatchMapping("/updateheadofstate/{name}")
 	 public ResponseEntity<Country> updateHeadOfState(@PathVariable("name") String name, @RequestParam String headOfState) {
 		Country country = cuService.updateHeadOfState(name, headOfState);
 		return new ResponseEntity<>(country,HttpStatus.OK);
-
 	 }
 	@PatchMapping("/updatepopulation/{name}")
      public ResponseEntity<Country> updatePopulation(@PathVariable("name") String name, @RequestParam Integer population) {

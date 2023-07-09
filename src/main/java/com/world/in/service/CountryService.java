@@ -15,7 +15,7 @@ public interface CountryService {
 		public List<Country> getAllCountries();
 		public Country getOneCountry(String name);
 		public Country getCountryWithHighestLifeExpectancy(); 
-		public String populationLifeExpectency(String countryCode);
+		public String populationLifeExpectancy(String countryCode);
 	    City getCapitalCityByCountryName(String countryName);
 		public Collection<String> getDistinctGovernmentForms();
 		public Collection<CountryData> getTop10PopulatedCountries();

@@ -11,7 +11,6 @@ public class GlobalExceptionHandler {
     public ResponseEntity<String> handleCityNotFoundException(CityNotFoundException ex) {
         return new ResponseEntity<String>(ex.getMessage(), HttpStatus.NOT_FOUND);
     }
-
     @ExceptionHandler(CountryNotFoundException.class)
     public ResponseEntity<String> handleCountryNotFoundException(CountryNotFoundException ex) {
         return new ResponseEntity<String>(ex.getMessage(), HttpStatus.NOT_FOUND);
