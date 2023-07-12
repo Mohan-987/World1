@@ -107,6 +107,7 @@
 	</dependencies>
 
 	<build>
+		<finalName>world</finalName>
 		<plugins>
 			<plugin>
 				<groupId>org.springframework.boot</groupId>
