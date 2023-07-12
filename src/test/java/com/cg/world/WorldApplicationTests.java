@@ -1,4 +1,4 @@
-package com.cg.world.in;
+package com.cg.world;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 import com.cg.world.service.CountryLanguageServiceImpl;
