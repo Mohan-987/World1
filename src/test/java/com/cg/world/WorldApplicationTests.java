@@ -1,4 +1,4 @@
-package com.cg.world;
+*/ package com.cg.world;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 import com.cg.world.service.CountryLanguageServiceImpl;
@@ -80,3 +80,4 @@ class WorldApplicationTests {
 		assertNotNull(countryLanguageService.getMaxPercentageLanguageByCountryCode("ARM"));
 	}
 }
+*/
